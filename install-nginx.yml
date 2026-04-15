@@ -2,16 +2,10 @@
 - name: install nginx and start
   hosts: all
   become: yes
-  gather_facts: no
+  gather_facts: no  
   tasks:
-    - name: install nginx
-      apt: 
-        name: nginx
-        state: present
-        update_cache: yes
+    - name: install nginx using raw command
+      raw: apt-get update && apt-get install -y nginx
 
-    - name: start nginx
-      service: 
-        name: nginx
-        state: started
-        enabled: yes
+    - name: ensure nginx is started
+      raw: systemctl enable --now nginx
