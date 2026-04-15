@@ -2,6 +2,7 @@
 - name: install nginx and start
   hosts: all
   become: yes
+  gather_facts: no
   tasks:
     - name: install nginx
       apt: 
