@@ -5,10 +5,31 @@
 
   tasks:
     - name: Ensure Nginx is installed
+      ansible.builtin.package:
         name: nginx
         state: present
 
+    - name: Create a custom index.html
+      ansible.builtin.copy:
+        content: |
+          <html>
+            <body>
+              <h1>Welcome to Sagar's DevOps Lab!</h1>
+              <p>Deployed via Ansible Automation Platform 2.6</p>
+            </body>
+          </html>
+        dest: /usr/share/nginx/html/index.html
+        mode: '0644'
+
     - name: Ensure Nginx is started and enabled
+      ansible.builtin.service:
         name: nginx
         state: started
         enabled: true
+
+    - name: Open HTTP port in firewalld (optional - for RHEL/CentOS)
+      ansible.builtin.firewalld:
+        service: http
+        permanent: true
+        state: enabled
+      ignore_errors: true # In case firewalld isn't running
